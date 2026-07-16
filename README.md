@@ -8,3 +8,8 @@ Keyword:
   - UnTypePointer to TClassDataPointer
   - TRecordDataPointer to UnTypePointer
   - UnTypePointer to TRecordDataPointer
+  - Display result within the pointer
+  - Initialize UnTypePointer
+  - Initialize TClassDataPointer
+  - Initialize TRecordDataPointer
+  - Initialize array
