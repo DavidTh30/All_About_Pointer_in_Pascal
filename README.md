@@ -13,3 +13,8 @@ Keyword:
   - Initialize TClassDataPointer
   - Initialize TRecordDataPointer
   - Initialize array
+  - Compair type of pointer
+  - Display type of pointer
+  - Free memory UnTypePointer
+  - Free memory TClassDataPointer
+  - Free memory TRecordDataPointer
