@@ -44,35 +44,35 @@ implementation
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
-  Tem_RecordData:P_TRecordData;
+  Tem_P_RecordData:P_TRecordData;
 begin
   log2({$I %LINENUM%},' Dynamic Allocation Initialize -------------------------');
 
   if P0_ <> nil then
   begin
-    Tem_RecordData:=P0_;
-    Dispose(Tem_RecordData);
+    Tem_P_RecordData:=P0_;
+    Dispose(Tem_P_RecordData);
     P0_:=nil;
   end;
 
-  New(Tem_RecordData);
-  Tem_RecordData^.DataName:='A1';
-  Tem_RecordData^.DataID:=11;
+  New(Tem_P_RecordData);
+  Tem_P_RecordData^.DataName:='A1';
+  Tem_P_RecordData^.DataID:=11;
 
-  P0_:=Tem_RecordData;
+  P0_:=Tem_P_RecordData;
 
   if P1_ <> nil then
   begin
-    Tem_RecordData:=P1_;
-    Dispose(Tem_RecordData);
+    Tem_P_RecordData:=P1_;
+    Dispose(Tem_P_RecordData);
     P1_:=nil;
   end;
 
-  New(Tem_RecordData);
-  Tem_RecordData^.DataName:='A2';
-  Tem_RecordData^.DataID:=22;
+  New(Tem_P_RecordData);
+  Tem_P_RecordData^.DataName:='A2';
+  Tem_P_RecordData^.DataID:=22;
 
-  P1_:=Tem_RecordData;
+  P1_:=Tem_P_RecordData;
 
   if GetTypeKind(P0_) = GetTypeKind(P_TRecordData) then  log2({$I %LINENUM%},' Type P0_: P_TRecordData');
   if GetTypeKind(P0_) = GetTypeKind(TRecordData) then  log2({$I %LINENUM%},' Type P0_: TRecordData');
@@ -88,24 +88,24 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  Tem_RecordData:P_TRecordData;
+  Tem_P_RecordData:P_TRecordData;
 begin
   log2({$I %LINENUM%},' Heap Allocation Initialize -------------------------');
 
   if P2_ <> nil then
   begin
-    Tem_RecordData:=P2_;
-    Finalize(Tem_RecordData^);
-    FreeMem(Tem_RecordData);
+    Tem_P_RecordData:=P2_;
+    Finalize(Tem_P_RecordData^);
+    FreeMem(Tem_P_RecordData);
     P2_:=nil;
   end;
 
-  GetMem(Tem_RecordData, SizeOf(TRecordData));
-  Initialize(Tem_RecordData^);
+  GetMem(Tem_P_RecordData, SizeOf(TRecordData));
+  Initialize(Tem_P_RecordData^);
 
-  Tem_RecordData^.DataName:='A3';
-  Tem_RecordData^.DataID:=33;
-  P2_:=Tem_RecordData;
+  Tem_P_RecordData^.DataName:='A3';
+  Tem_P_RecordData^.DataID:=33;
+  P2_:=Tem_P_RecordData;
 
   if GetTypeKind(P2_) = GetTypeKind(P_TRecordData) then  log2({$I %LINENUM%},' Type: P_TRecordData');
   if GetTypeKind(P2_) = GetTypeKind(TRecordData) then  log2({$I %LINENUM%},' Type: TRecordData');
@@ -119,6 +119,8 @@ procedure TForm1.Button3Click(Sender: TObject);
 var
   MyArray: array[0..99] of Integer;
   Tem_P_RecordData:P_TRecordData;
+  Tem_P_ClassData:P_TClassData;
+  Tem_ClassData:TClassData;
 begin
   log2({$I %LINENUM%},' Zero Memory -------------------------');
   log2({$I %LINENUM%},' MyArray[99]: '+MyArray[99].ToString);
@@ -146,43 +148,59 @@ begin
   end;
   if P4_ <> nil then
   begin
-    P_TClassData(P4_)^:=ClassData;
+    //New(Tem_P_ClassData);                //Not work
+    //Tem_ClassData:=TClassData.Create;    //Not work
+    //Tem_P_ClassData^:=Tem_ClassData;     //Not work
+    //P_TClassData(P4_)^:=Tem_P_ClassData^;//Not work
+    //Tem_ClassData.Free;                  //Not work
+    //Dispose(Tem_P_ClassData);            //Not work
+
+    Tem_P_ClassData:=P4_;
+    Tem_P_ClassData^.Free;
+    Dispose(Tem_P_ClassData);
+    P4_:=nil;
+
+    New(Tem_P_ClassData);
+    Tem_ClassData:=TClassData.Create;
+    Tem_P_ClassData^:=Tem_ClassData;
+    P4_:=Tem_P_ClassData;
+
   end;
 
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
 var
-  Tem_RecordData:P_TRecordData;
-  Tem2_RecordData:P_TRecordData;
+  Tem_P_RecordData:P_TRecordData;
+  Tem2_P_RecordData:P_TRecordData;
 begin
   log2({$I %LINENUM%},' Heap Allocation Array -------------------------');
 
   if P3_ <> nil then
   begin
-    Tem_RecordData:=P3_;
-    Finalize(Tem_RecordData^);
-    FreeMem(Tem_RecordData);
+    Tem_P_RecordData:=P3_;
+    Finalize(Tem_P_RecordData^);
+    FreeMem(Tem_P_RecordData);
     P3_:=nil;
   end;
 
-  GetMem(Tem_RecordData,SizeOf(TRecordData)*2);
+  GetMem(Tem_P_RecordData,SizeOf(TRecordData)*2);
   Try
-    Initialize(Tem_RecordData^,2);
-    Tem_RecordData[0].DataName:='A4';
-    Tem_RecordData[0].DataID:=444;
-    Tem_RecordData[1].DataName:='A5';
-    Tem_RecordData[1].DataID:=555;
+    Initialize(Tem_P_RecordData^,2);
+    Tem_P_RecordData[0].DataName:='A4';
+    Tem_P_RecordData[0].DataID:=444;
+    Tem_P_RecordData[1].DataName:='A5';
+    Tem_P_RecordData[1].DataID:=555;
 
-    P3_:= Tem_RecordData;
-    Tem2_RecordData:=P3_;
+    P3_:= Tem_P_RecordData;
+    Tem2_P_RecordData:=P3_;
 
     if GetTypeKind(P3_) = GetTypeKind(P_TRecordData) then  log2({$I %LINENUM%},' Type: P_TRecordData');
     if GetTypeKind(P3_) = GetTypeKind(TRecordData) then  log2({$I %LINENUM%},' Type: P_TRecordData');
-    log2({$I %LINENUM%},' RecordData[0].DataName: '+Tem2_RecordData[0].DataName);
-    log2({$I %LINENUM%},' RecordData[0].DataID: '+Tem2_RecordData[0].DataID.ToString);
-    log2({$I %LINENUM%},' RecordData[1].DataName: '+Tem2_RecordData[1].DataName);
-    log2({$I %LINENUM%},' RecordData[1].DataID: '+Tem2_RecordData[1].DataID.ToString);
+    log2({$I %LINENUM%},' RecordData[0].DataName: '+Tem2_P_RecordData[0].DataName);
+    log2({$I %LINENUM%},' RecordData[0].DataID: '+Tem2_P_RecordData[0].DataID.ToString);
+    log2({$I %LINENUM%},' RecordData[1].DataName: '+Tem2_P_RecordData[1].DataName);
+    log2({$I %LINENUM%},' RecordData[1].DataID: '+Tem2_P_RecordData[1].DataID.ToString);
 
   except    // Example error Exception
     on E: EConvertError do

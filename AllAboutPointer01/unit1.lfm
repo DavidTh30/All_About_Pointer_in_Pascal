@@ -74,7 +74,7 @@ object Form1: TForm1
     Height = 37
     Top = 336
     Width = 186
-    Caption = 'Clear'
+    Caption = 'Clear text box'
     TabOrder = 6
     OnClick = Button6Click
   end
