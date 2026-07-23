@@ -21,6 +21,7 @@ type
     DataID: Integer;
   end;
 
+procedure log(message_: string);
 procedure log2(LINENUM_: integer; message_: string);
 
 var
@@ -38,6 +39,11 @@ var
   RecordData:TRecordData;
 
 implementation
+
+procedure log(message_: string);
+begin
+  Memo_.Append(message_);
+end;
 
 procedure log2(LINENUM_: integer; message_: string);
 begin

@@ -20,6 +20,8 @@ type
     Button5: TButton;
     Button6: TButton;
     Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
     Memo1: TMemo;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -28,6 +30,8 @@ type
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
   private
 
@@ -313,6 +317,74 @@ begin
     log2({$I %LINENUM%},' P4_.DataID: '+P_TClassData(P4_)^.DataID.ToString);
   end;
 
+end;
+
+procedure TForm1.Button8Click(Sender: TObject);
+var
+  sBuffer : array of Byte;
+  i:integer;
+  BufferByte : array of Byte;  // Dynamic Array
+  cb: DWORD;
+  ByteArrayPtr: PByteArray;
+  s:string;
+begin
+  log({$I %LINE%}+' PByte array to Array Byte -------------------------');
+
+  SetLength(sBuffer, 5);
+  for i:=low(sBuffer) to high(sBuffer) do sBuffer[i]:= $30+i;
+  //ByteArrayPtr := @sBuffer; // For Static / Fixed-Size Arrays
+  //ByteArrayPtr := PByteArray(@sBuffer); // For Static / Fixed-Size Arrays
+  ByteArrayPtr := PByteArray(@sBuffer[0]);  //For Dynamic Arrays
+  log({$I %LINE%}+' chr(ByteArrayPtr^[0]): "'+ chr(ByteArrayPtr^[0]) +'"');
+
+  cb:=length(sBuffer);
+  SetLength(BufferByte, cb);
+  Move(ByteArrayPtr^[0], BufferByte[0], cb);
+
+  s := StringOf(BufferByte);
+  log({$I %LINE%}+' BufferByte: "'+ s +'"');
+
+  s:='';
+  for i:=0 to cb-1 do
+  begin
+    if i <> 0 then s:=s+':';
+    s:=s+IntToHex(Ord(BufferByte[i]), 2);
+  end;
+
+  log({$I %LINE%}+' BufferByte[Hex]: "'+ s +'"');
+end;
+
+procedure TForm1.Button9Click(Sender: TObject);
+var
+  sBuffer : array of Byte;
+  i:integer;
+  BufferByte : array of Byte;  // Dynamic Array
+  cb: DWORD;
+  lpData:Pbyte;
+  s:string;
+begin
+  log({$I %LINE%}+' PByte to Array of Byte -------------------------');
+
+  SetLength(sBuffer, 5);
+  for i:=low(sBuffer) to high(sBuffer) do sBuffer[i]:= $30+i;
+  lpData := @sBuffer[0];
+  log({$I %LINE%}+' chr(lpData^): "'+ chr(lpData^) +'"');
+
+  cb:=length(sBuffer);
+  SetLength(BufferByte, cb);
+  Move(lpData^, BufferByte[0], cb);
+
+  s := StringOf(BufferByte);
+  log({$I %LINE%}+' BufferByte: "'+ s +'"');
+
+  s:='';
+  for i:=0 to cb-1 do
+  begin
+    if i <> 0 then s:=s+':';
+    s:=s+IntToHex(Ord(BufferByte[i]), 2);
+  end;
+
+  log({$I %LINE%}+' BufferByte[Hex]: "'+ s +'"');
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);

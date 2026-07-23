@@ -1,14 +1,14 @@
 object Form1: TForm1
   Left = 688
-  Height = 377
+  Height = 437
   Top = 127
   Width = 504
   Caption = 'All about Pointer / UnTypePointer'
-  ClientHeight = 377
+  ClientHeight = 437
   ClientWidth = 504
-  Position = poWorkAreaCenter
-  LCLVersion = '4.6.0.0'
   OnClose = FormClose
+  Position = poWorkAreaCenter
+  LCLVersion = '3.4.0.0'
   object Memo1: TMemo
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
@@ -16,7 +16,7 @@ object Form1: TForm1
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 225
-    Height = 377
+    Height = 437
     Top = 0
     Width = 279
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -28,7 +28,7 @@ object Form1: TForm1
     Left = 22
     Height = 37
     Top = 8
-    Width = 186
+    Width = 194
     Caption = 'Dynamic Allocation Initialize'
     TabOrder = 1
     OnClick = Button1Click
@@ -37,7 +37,7 @@ object Form1: TForm1
     Left = 22
     Height = 37
     Top = 56
-    Width = 186
+    Width = 194
     Caption = 'Heap Allocation Initialize'
     TabOrder = 2
     OnClick = Button2Click
@@ -46,7 +46,7 @@ object Form1: TForm1
     Left = 22
     Height = 37
     Top = 200
-    Width = 186
+    Width = 194
     Caption = 'Zero/Default Memory'
     TabOrder = 3
     OnClick = Button3Click
@@ -55,7 +55,7 @@ object Form1: TForm1
     Left = 22
     Height = 37
     Top = 104
-    Width = 186
+    Width = 194
     Caption = 'Heap Allocation Array'
     TabOrder = 4
     OnClick = Button4Click
@@ -64,7 +64,7 @@ object Form1: TForm1
     Left = 22
     Height = 37
     Top = 152
-    Width = 186
+    Width = 194
     Caption = 'Dynamic Allocation Class  Initialize'
     TabOrder = 5
     OnClick = Button5Click
@@ -72,8 +72,8 @@ object Form1: TForm1
   object Button6: TButton
     Left = 22
     Height = 37
-    Top = 336
-    Width = 186
+    Top = 392
+    Width = 194
     Caption = 'Clear text box'
     TabOrder = 6
     OnClick = Button6Click
@@ -81,10 +81,28 @@ object Form1: TForm1
   object Button7: TButton
     Left = 22
     Height = 37
-    Top = 288
-    Width = 186
+    Top = 344
+    Width = 194
     Caption = 'List all'
     TabOrder = 7
     OnClick = Button7Click
+  end
+  object Button8: TButton
+    Left = 22
+    Height = 37
+    Top = 296
+    Width = 194
+    Caption = 'PByte array to Array Byte'
+    TabOrder = 8
+    OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 22
+    Height = 37
+    Top = 256
+    Width = 194
+    Caption = 'PByte to Array of Byte'
+    TabOrder = 9
+    OnClick = Button9Click
   end
 end
