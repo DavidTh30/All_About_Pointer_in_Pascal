@@ -4,6 +4,8 @@ All about pointer in Pascal
 <img src="AllAboutPointer01/SS01.png" width="400" height="400">
 
 Keyword:
+  - PByte to Array of Byte
+  - PByte array to Array of Byte
   - TClassDataPointer to UnTypePointer
   - UnTypePointer to TClassDataPointer
   - TRecordDataPointer to UnTypePointer
