@@ -6,7 +6,24 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Strutils, StdCtrls,
-  Unit2;
+  Unit2, windows;
+
+function SetTimer(hWnd: HWND; nIDEvent: UINT_PTR; uElapse: UINT; lpTimerFunc: NativeInt): UINT_PTR; external 'user32.dll' name 'SetTimer';
+
+type
+  TLogCallback = procedure();
+
+type
+  TLogCallback2 = procedure(const Msg: String);
+
+  type
+  TLogCallback3 = procedure(Sender: TObject) of object;
+
+type
+  TWorker = class
+  public
+    procedure OnComplete(Sender: TObject);
+  end;
 
 type
 
@@ -14,6 +31,10 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    Button12: TButton;
+    Button13: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -23,6 +44,10 @@ type
     Button8: TButton;
     Button9: TButton;
     Memo1: TMemo;
+    procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -45,6 +70,33 @@ var
 implementation
 
 {$R *.lfm}
+
+procedure TWorker.OnComplete(Sender: TObject);
+begin
+  log('Callback triggered inside class instance!');
+end;
+
+Procedure Process01;
+Begin
+  log({$I %LINE%}+' Process01 -------------------------');
+End;
+
+Procedure Process02(const Msg: String);
+Begin
+  log({$I %LINE%}+' Process02: '+ Msg + ' -------------------------');
+End;
+
+procedure DoWork(Callback: TLogCallback); overload;
+begin
+  if Assigned(Callback) then
+    Callback;//('Work completed successfully!');
+end;
+
+procedure DoWork(Callback: TLogCallback2); overload;
+begin
+  if Assigned(Callback) then
+    Callback('Work completed successfully!');
+end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 var
@@ -88,6 +140,40 @@ begin
 
   log2({$I %LINENUM%},' P1_.DataName: '+P_TRecordData(P1_)^.DataName);
   log2({$I %LINENUM%},' P1_.DataID: '+P_TRecordData(P1_)^.DataID.ToString);
+end;
+
+procedure TForm1.Button10Click(Sender: TObject);
+begin
+  DoWork(@Process01);
+end;
+
+procedure TForm1.Button11Click(Sender: TObject);
+begin
+  DoWork(@Process02);
+end;
+
+procedure TForm1.Button12Click(Sender: TObject);
+var
+  TLog:TLogCallback2;
+begin
+  TLog:=@Process02;
+  TLog('Hello');
+end;
+
+procedure TForm1.Button13Click(Sender: TObject);
+var
+  Worker: TWorker;
+  Callback: TLogCallback3;
+begin
+  Worker := TWorker.Create;
+
+  // Assign a method pointer (includes instance and code address)
+  Callback := @Worker.OnComplete;
+
+  // Call it
+  Callback(Worker);
+
+  Worker.Free;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -363,6 +449,7 @@ var
   lpData:Pbyte;
   s:string;
 begin
+
   log({$I %LINE%}+' PByte to Array of Byte -------------------------');
 
   SetLength(sBuffer, 5);
